@@ -10,7 +10,7 @@ const App = () => {
 
   const getdata = async () => {
     try {
-      const response = await fetch("http://localhost:5000/");
+      const response = await fetch("https://todolist-kzlu.onrender.com");
       const result = await response.json();
       if (result.status === 200) {
         setlists(result.data);
@@ -30,7 +30,7 @@ const App = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/", {
+      const response = await fetch("https://todolist-kzlu.onrender.com", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +55,7 @@ const App = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/?index=${index}`, {
+      const response = await fetch(`https://todolist-kzlu.onrender.com?index=${index}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ const App = () => {
 
   const deletedata = async (index) => {
     try {
-      await fetch(`http://localhost:5000/${index}`, {
+      await fetch(`https://todolist-kzlu.onrender.com${index}`, {
         method: "DELETE",
       });
       getdata();
