@@ -5,7 +5,8 @@ const App = () => {
   const [ipvalue, setipvalue] = useState("");
   const [lists, setlists] = useState([]);
   const [editid, seteditid] = useState(null);
-  const [error, setError] = useState(null); // Added error state
+
+  const impkey = import.meta.env.VITE_IMP_KEY
 
   const getdata = async () => {
     try {
@@ -13,11 +14,12 @@ const App = () => {
       const result = await response.json();
       if (result.status === 200) {
         setlists(result.data);
+        console.log(result.data);
       } else {
-        setError("Error fetching data");
+        console.error("Error fetching data:", result);
       }
     } catch (error) {
-      setError("Fetch error: " + error.message);
+      console.error("Fetch error:", error);
     }
   };
 
@@ -39,10 +41,10 @@ const App = () => {
         setipvalue("");
         getdata();
       } else {
-        setError("Error posting data");
+        console.error("Error posting data:", response);
       }
     } catch (error) {
-      setError("Fetch error: " + error.message);
+      console.error("Fetch error:", error);
     }
   };
 
@@ -65,21 +67,21 @@ const App = () => {
         setipvalue("");
         getdata();
       } else {
-        setError("Error updating data");
+        console.error("Error updating data:", response);
       }
     } catch (error) {
-      setError("Fetch error: " + error.message);
+      console.error("Fetch error:", error);
     }
   };
 
   const deletedata = async (index) => {
     try {
-      await fetch(`https://todolist-kzlu.onrender.com/${index}`, { // Corrected URL
+      await fetch(`https://todolist-kzlu.onrender.com${index}`, {
         method: "DELETE",
       });
       getdata();
     } catch (error) {
-      setError("Fetch error: " + error.message);
+      console.error("Fetch error:", error);
     }
   };
 
@@ -90,7 +92,7 @@ const App = () => {
   return (
     <>
       <div className="container">
-        <h1>TODO LISTS</h1>
+      <h1>TODO LISTS</h1>
         <input
           value={ipvalue}
           onChange={(e) => setipvalue(e.target.value)}
@@ -101,13 +103,12 @@ const App = () => {
         ) : (
           <button onClick={postdata}>Add</button>
         )}
-        {error && <p className="error">{error}</p>} {/* Display error messages */}
       </div>
       <ul>
         {lists.map((item) => (
           <li key={item._id}>
             {item.ipvalue} 
-            <button onClick={() => { seteditid(item._id); setipvalue(item.ipvalue); }} className="edit">Edit</button> 
+            <button onClick={() => { seteditid(item._id); setipvalue(item.ipvalue) }} className="edit">Edit</button> 
             <button onClick={() => deletedata(item._id)} className="delete">Delete</button>
           </li>
         ))}
